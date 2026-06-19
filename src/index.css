@@ -1,1 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
+
+@theme {
+  /* Cinema color palette */
+  --color-cinema-bg:      #0a0a0f;
+  --color-cinema-surface: #12121a;
+  --color-cinema-card:    #1a1a28;
+  --color-cinema-border:  #2a2a3d;
+  --color-cinema-accent:  #e50914;
+  --color-cinema-gold:    #f5c518;
+  --color-cinema-muted:   #6b7280;
+
+  /* Font family */
+  --font-family-sans: 'Inter', system-ui, sans-serif;
+}

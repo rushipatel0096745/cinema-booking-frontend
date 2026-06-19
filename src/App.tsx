@@ -2,7 +2,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ProtectedRoute, GuestRoute } from "./components/ProtectedRoute";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
-// import { DashboardPage } from "./pages/DashboardPage";
+import MovieListPage from "./pages/MovieListPage";
+import MovieDetailsPage from "./pages/MovieDetailsPage";
 
 function App() {
     return (
@@ -16,7 +17,8 @@ function App() {
 
                 {/* Protected — redirect to /login if not authenticated */}
                 <Route element={<ProtectedRoute />}>
-                    <Route path='/dashboard' element={<div className='p-8'>Dashboard 🎉</div>} />
+                    <Route path='/dashboard' element={<MovieListPage />} />
+                    <Route path='/movies/:id' element={<MovieDetailsPage />} />
                     {/* Add more protected routes here */}
                 </Route>
 
