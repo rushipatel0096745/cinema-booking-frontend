@@ -87,6 +87,8 @@ export default function Payment() {
     const { clientSecret, stripePublishableKey, totalAmount } = useBookingStore();
     const [stripePromise, setStripePromise] = useState<ReturnType<typeof loadStripe> | null>(null);
 
+    const breakdown = location.state?.breakdown;
+
     useEffect(() => {
         // if store was cleared (e.g. page refresh), redirect back
         if (!clientSecret || !stripePublishableKey) {
@@ -140,7 +142,7 @@ export default function Payment() {
                     </div>
                     <div className='text-right flex-shrink-0'>
                         <p className='text-xs text-cinema-muted'>Total</p>
-                        <p className='font-semibold'>₹{totalAmount?.toFixed(2)}</p>
+                        <p className='font-semibold'>₹{breakdown?.total?.toFixed(2)}</p>
                     </div>
                 </div>
 

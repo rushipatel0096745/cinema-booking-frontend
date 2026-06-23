@@ -8,6 +8,8 @@ import Payment from "./pages/Payment";
 import SeatPicker from "./pages/SeatPicker";
 import Checkout from "./pages/Checkout";
 import BookingConfirmation from "./pages/BookingConfirmation";
+import MyBookings from "./pages/MyBookings";
+import BookingDetails from "./pages/BookingDetails";
 
 function App() {
     return (
@@ -28,6 +30,8 @@ function App() {
                     <Route path='/checkout/:showtimeId' element={<Checkout />} />
                     <Route path='/payment/:bookingId' element={<Payment />} />
                     <Route path='/booking-confirmation/:bookingId' element={<BookingConfirmation />} />
+                    <Route path='/my-bookings' element={<MyBookings />} />
+                    <Route path='/bookings/:bookingId' element={<BookingDetails />} />
                 </Route>
 
                 <Route path='/' element={<Navigate to='/dashboard' replace />} />

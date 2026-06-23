@@ -1,5 +1,5 @@
 import { api } from "./axiosInstance.ts";
-import type { ApiResponse, Booking } from "../types";
+import type { ApiResponse, Booking, PriceSummary } from "../types";
 
 export interface LockSeatsResponse {
     lock_expires_at: string;
@@ -13,6 +13,7 @@ export interface CreateBookingResponse {
     total_amount: number;
     currency: string;
     stripe_publishable_key: string;
+    breakdown: PriceSummary;
 }
 
 export const lockSeats = async (showtimeId: string, seatIds: string[]): Promise<LockSeatsResponse> => {

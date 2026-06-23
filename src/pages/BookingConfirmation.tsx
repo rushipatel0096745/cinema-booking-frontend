@@ -184,7 +184,7 @@ export default function BookingConfirmation() {
                 {/* actions */}
                 <div className='flex gap-3'>
                     <Link
-                        to='/my-tickets'
+                        to='/my-bookings'
                         className='flex-1 py-3 text-center border border-cinema-border rounded-xl
                        hover:bg-cinema-surface transition-colors text-sm font-medium'>
                         My tickets

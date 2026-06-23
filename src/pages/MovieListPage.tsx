@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { movieListApi } from "../api/movieApi";
-import { Star, Clock, Calendar, Search, MapPin, Film, SlidersHorizontal } from "lucide-react";
+import { Star, Clock, Calendar, Search, MapPin, Film, SlidersHorizontal, Ticket } from "lucide-react";
 import type { Movie } from "../types/index";
 import { useNavigate } from "react-router-dom";
 
@@ -119,6 +119,16 @@ function MovieListPage() {
                                 <SlidersHorizontal size={14} />
                             </div>
                         </div>
+
+                        {/* My Tickets */}
+                        <button
+                            onClick={() => navigate("/my-bookings")}
+                            className='flex items-center gap-2 rounded-xl border border-cinema-border/60 bg-cinema-card/50
+            hover:border-cinema-accent/60 hover:bg-cinema-card px-4 py-2.5 text-sm font-medium
+            text-white transition-all'>
+                            <Ticket size={16} className='text-cinema-accent' />
+                            My Tickets
+                        </button>
                     </div>
                 </div>
             </header>

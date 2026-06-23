@@ -3,7 +3,7 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { useBookingStore } from "../store/bookingStore";
 import BookingTimer from "../components/BookingTimer";
 import { createBooking } from "../api/bookings";
-import type { SeatCell } from "../types";
+import type { PriceSummary, SeatCell } from "../types";
 
 export default function Checkout() {
     const { showtimeId } = useParams<{ showtimeId: string }>();
@@ -19,11 +19,12 @@ export default function Checkout() {
     const [isCreating, setIsCreating] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    // price breakdown
-    const subtotal = selectedSeats.reduce((sum, s) => sum + s.price, 0);
-    const convenienceFee = +(subtotal * 0.02).toFixed(2);
-    const taxes = +((subtotal + convenienceFee) * 0.18).toFixed(2);
-    const grandTotal = +(subtotal + convenienceFee + taxes).toFixed(2);
+    const prelimSubtotal = selectedSeats.reduce((sum, s) => sum + s.price, 0);
+    const prelimConvFee = +(prelimSubtotal * 0.02).toFixed(2);
+    const prelimTaxes = +((prelimSubtotal + prelimConvFee) * 0.18).toFixed(2);
+    const prelimTotal = +(prelimSubtotal + prelimConvFee + prelimTaxes).toFixed(2);
+
+    const [breakdown, setBreakdown] = useState<PriceSummary | null>(null);
 
     const handleConfirmAndPay = async () => {
         if (!showtimeId || selectedSeats.length === 0) return;
@@ -33,9 +34,16 @@ export default function Checkout() {
         try {
             const seatIds = selectedSeats.map((s) => s.id);
             const res = await createBooking(showtimeId, seatIds);
+            setBreakdown(res.breakdown);
             setBooking(res.booking_id, res.client_secret, res.stripe_publishable_key);
             navigate(`/payment/${res.booking_id}`, {
-                state: { movie, showtime, clientSecret: res.client_secret, publishableKey: res.stripe_publishable_key },
+                state: {
+                    movie,
+                    showtime,
+                    clientSecret: res.client_secret,
+                    publishableKey: res.stripe_publishable_key,
+                    breakdown: res.breakdown,
+                },
             });
         } catch (err: any) {
             setError(err?.response?.data?.error ?? "Failed to create booking. Please try again.");
@@ -143,22 +151,22 @@ export default function Checkout() {
                     <div className='px-5 py-4 border-b border-cinema-border'>
                         <h3 className='font-medium'>Price Breakdown</h3>
                     </div>
-                    <div className='px-5 py-4 space-y-3'>
-                        <div className='flex justify-between text-sm'>
+                    <div className='px-5 py-4 space-y-3 text-sm'>
+                        <div className='flex justify-between'>
                             <span className='text-cinema-muted'>Subtotal</span>
-                            <span>₹{subtotal.toFixed(2)}</span>
+                            <span>₹{(breakdown?.sub_total ?? prelimSubtotal).toFixed(2)}</span>
                         </div>
-                        <div className='flex justify-between text-sm'>
+                        <div className='flex justify-between'>
                             <span className='text-cinema-muted'>Convenience fee (2%)</span>
-                            <span>₹{convenienceFee.toFixed(2)}</span>
+                            <span>₹{(breakdown?.convenience_fee ?? prelimConvFee).toFixed(2)}</span>
                         </div>
-                        <div className='flex justify-between text-sm'>
+                        <div className='flex justify-between'>
                             <span className='text-cinema-muted'>GST (18%)</span>
-                            <span>₹{taxes.toFixed(2)}</span>
+                            <span>₹{(breakdown?.taxes ?? prelimTaxes).toFixed(2)}</span>
                         </div>
                         <div className='border-t border-cinema-border pt-3 flex justify-between font-semibold'>
                             <span>Total</span>
-                            <span className='text-lg'>₹{grandTotal.toFixed(2)}</span>
+                            <span>₹{(breakdown?.total ?? prelimTotal).toFixed(2)}</span>
                         </div>
                     </div>
                 </div>
@@ -175,7 +183,7 @@ export default function Checkout() {
                     className='w-full py-4 bg-cinema-accent hover:bg-red-700 disabled:opacity-50
                      disabled:cursor-not-allowed rounded-xl font-semibold text-lg
                      transition-colors'>
-                    {isCreating ? "Processing..." : `Pay ₹${grandTotal.toFixed(2)}`}
+                    {isCreating ? "Processing..." : `Pay ₹${(breakdown?.total ?? prelimTotal).toFixed(2)}`}
                 </button>
             </div>
         </div>
