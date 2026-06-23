@@ -347,7 +347,7 @@ const MovieDetailsPage = () => {
                                         return (
                                             <button
                                                 key={showtime.id}
-                                                onClick={() => navigate(`/booking/${showtime.id}`)}
+                                                onClick={() => navigate(`/showtimes/${showtime.id}/seats`, { state: { movie, showtime } })}
                                                 className='group/slot text-left cursor-pointer p-3 rounded-xl border border-cinema-border/60 bg-cinema-card/30 hover:bg-cinema-accent hover:border-cinema-accent transition-all duration-300 hover:scale-[1.03] active:scale-[0.97] hover:shadow-lg hover:shadow-cinema-accent/15 min-w-[110px]'>
                                                 <span className='block text-sm font-black text-white group-hover/slot:text-white transition-colors'>
                                                     {formatShowtime(showtime.starts_at)}

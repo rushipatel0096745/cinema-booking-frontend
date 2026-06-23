@@ -4,6 +4,10 @@ import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import MovieListPage from "./pages/MovieListPage";
 import MovieDetailsPage from "./pages/MovieDetailsPage";
+import Payment from "./pages/Payment";
+import SeatPicker from "./pages/SeatPicker";
+import Checkout from "./pages/Checkout";
+import BookingConfirmation from "./pages/BookingConfirmation";
 
 function App() {
     return (
@@ -20,6 +24,10 @@ function App() {
                     <Route path='/dashboard' element={<MovieListPage />} />
                     <Route path='/movies/:id' element={<MovieDetailsPage />} />
                     {/* Add more protected routes here */}
+                    <Route path='/showtimes/:showtimeId/seats' element={<SeatPicker />} />
+                    <Route path='/checkout/:showtimeId' element={<Checkout />} />
+                    <Route path='/payment/:bookingId' element={<Payment />} />
+                    <Route path='/booking-confirmation/:bookingId' element={<BookingConfirmation />} />
                 </Route>
 
                 <Route path='/' element={<Navigate to='/dashboard' replace />} />
